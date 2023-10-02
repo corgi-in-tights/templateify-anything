@@ -1,24 +1,18 @@
 import json
 from pathlib import Path
 
-from settings import CONFIG_DIRECTORY, CONFIG_FILE_EXTENSION 
 from src.helper import get_all_paths
+from src.config import create_config
 from src.templateify import apply_template
 
 
-# get all config files
-config_files = get_all_paths(CONFIG_DIRECTORY, search=f'**/*.{CONFIG_FILE_EXTENSION}')
-config = {}
+from settings import CONFIG_DIRECTORY, CONFIG_FILE_EXTENSION, DEFAULT_GLOBAL_MODULE
 
-for cfp in config_files:
-    file_path = str(cfp)
-    config_file_key = cfp.name.replace(f'.{CONFIG_FILE_EXTENSION}', '').lower().replace(' ', '_')
-
-    with open(file_path, 'r') as fp:
-        config[config_file_key] = json.load(fp)
+config = create_config(Path(CONFIG_DIRECTORY), CONFIG_FILE_EXTENSION, DEFAULT_GLOBAL_MODULE)
 
 
-from settings import TEMPLATE_DIRECTORY, OUTPUT_DIRECTORY, PROPERTY_PATTERN, NON_SUBSTITUTE_PATHS, BLACKLISTED_PATHS, DIRECTORY_SUB_PATTERN
+
+from settings import TEMPLATE_DIRECTORY, OUTPUT_DIRECTORY, PROPERTY_PATTERN, NON_SUBSTITUTE_PATHS, BLACKLISTED_PATHS, DIRECTORY_SUB_PATTERN, DEFAULT_GLOBAL_MODULE
 
 output_dir = Path(OUTPUT_DIRECTORY)
 if (not output_dir.exists()):
@@ -39,4 +33,5 @@ for f in template_files:
         blacklisted=BLACKLISTED_PATHS, 
         do_not_substitute=NON_SUBSTITUTE_PATHS,
         config=config,
+        use_global_namespace=DEFAULT_GLOBAL_MODULE
     )
