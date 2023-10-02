@@ -1,0 +1,1 @@
+public static final String s = "You will find that @{{ test.fish }} will NOT get sub'd :)";

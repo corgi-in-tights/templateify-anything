@@ -1,0 +1,1 @@
+public static final String s_electric_boogaloo = "You will find that @{{ test.fish }} will NOT get sub'd :)";
